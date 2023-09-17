@@ -5,47 +5,19 @@ const N = process.argv[2]
 let max = 0
 let maxS = ''
 
-// Числа от 0 до 31 в двоичной записи
-const S = [
-  '000000000000000',
-  '000000000000001',
-  '000000000000010',
-  '000000000000011',
-  '000000000000100',
-  '000000000000101',
-  '000000000000110',
-  '000000000000111',
-  '000000000001000',
-  '000000000001001',
-  '000000000001010',
-  '000000000001011',
-  '000000000001100',
-  '000000000001101',
-  '000000000001110',
-  '000000000001111',
-  '000000000010000',
-  '000000000010001',
-  '000000000010010',
-  '000000000010011',
-  '000000000010100',
-  '000000000010101',
-  '000000000010110',
-  '000000000010111',
-  '000000000011000',
-  '000000000011001',
-  '000000000011010',
-  '000000000011011',
-  '000000000011100',
-  '000000000011101',
-  '000000000011110',
-  '000000000011111',
-]
+// Ландшафт
+const S = []
+const u = []
 
-// Соответствующие кодировкам десятичные числа
-const u = [
-  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
-  27, 28, 29, 30, 31,
-]
+console.log('Ландшафт в формате "кодировка: приспособленность":')
+for (let i = 0; i < 32; i++) {
+  const currentCode = generateCode()
+  //S.push(currentCode)
+  const currentPrisp = getPrispByCode(currentCode)
+  //u.push(currentPrisp)
+  console.log(`${currentCode} : ${currentPrisp}`)
+}
+console.log('--------------')
 
 while (i < N) {
   console.log(`Номер шага: ${i}`)
@@ -53,22 +25,33 @@ while (i < N) {
   console.log(`Текущая лучшая кодировка: ${maxS}`)
 
   // Math.random() генерирует число в диапазоне [0,1), а Math.floor() округляет в меньшую сторону
-  const choice = Math.floor(Math.random() * 32)
+  const code = generateCode()
+  const prisp = getPrispByCode(code)
 
-  console.log(`Выбранная кодировка: ${S[choice]}`)
-  console.log(`Приспособленность выбранной кодировки: ${u[choice]}`)
+  console.log(`Выбранная кодировка: ${code}`)
+  console.log(`Приспособленность выбранной кодировки: ${prisp}`)
 
-  if (max < u[choice]) {
-    max = u[choice]
-    maxS = S[choice]
+  if (max < prisp) {
+    max = prisp
+    maxS = code
     console.log(`Максимальная кодировка теперь ${maxS}`)
     console.log(`Максимальная приспособленность теперь ${max}`)
   } else {
     console.log(`Максимальные приспособленность и кодировка не изменились`)
   }
 
-  console.log('------------')
+  console.log('--------------')
   i++
+}
+
+function generateCode() {
+  let S = Array(15).fill(1)
+  S = S.map((item) => Math.floor(Math.random() * 2)).join('')
+  return S
+}
+
+function getPrispByCode(code) {
+  return parseInt(code, 2)
 }
 
 console.log(`Решение`)
