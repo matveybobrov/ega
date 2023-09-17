@@ -5,16 +5,10 @@ const N = process.argv[2]
 let max = 0
 let maxS = ''
 
-// Ландшафт
-const S = []
-const u = []
-
 console.log('Ландшафт в формате "кодировка: приспособленность":')
 for (let i = 0; i < 32; i++) {
   const currentCode = generateCode()
-  //S.push(currentCode)
   const currentPrisp = getPrispByCode(currentCode)
-  //u.push(currentPrisp)
   console.log(`${currentCode} : ${currentPrisp}`)
 }
 console.log('--------------')
@@ -24,7 +18,6 @@ while (i < N) {
   console.log(`Текущий максимум приспособленности: ${max}`)
   console.log(`Текущая лучшая кодировка: ${maxS}`)
 
-  // Math.random() генерирует число в диапазоне [0,1), а Math.floor() округляет в меньшую сторону
   const code = generateCode()
   const prisp = getPrispByCode(code)
 
@@ -46,6 +39,7 @@ while (i < N) {
 
 function generateCode() {
   let S = Array(15).fill(1)
+  // Math.random() генерирует число в диапазоне [0,1), а Math.floor() округляет в меньшую сторону
   S = S.map((item) => Math.floor(Math.random() * 2)).join('')
   return S
 }
