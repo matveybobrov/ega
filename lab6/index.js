@@ -30,6 +30,7 @@ while (i !== N) {
   console.log(`\nШаг номер ${(i += 1)}`)
 
   console.log(`Ищем ближайший город для каждого города из S:`, S)
+  console.log(`(не включая уже пройденные города)`)
 
   let minCity = S[0]
   let minTarget = null
