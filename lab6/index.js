@@ -49,7 +49,7 @@ while (i !== N) {
   console.log(`Кратчайший переход: `)
   console.log(`${minCity} -> ${minTarget}: ${minDistance}`)
 
-  console.log(`Вставляем ${minTarget} в решение...`)
+  console.log(`Вставляем ${minTarget} в решение после ${minCity}`)
   let indexOfMinCity = S.indexOf(minCity)
   const leftSide = S.slice(0, indexOfMinCity + 1)
   const rightSide = S.slice(indexOfMinCity + 1)
@@ -63,7 +63,7 @@ while (i !== N) {
 // Добавляем цену перехода из первого города в последний
 Q += originalArr[S[0] - 1][S[S.length - 1] - 1]
 
-console.log(`Финальное решение:`)
+console.log(`\nФинальное решение:`)
 console.log(`S: `, S)
 console.log(`Q: `, Q)
 
