@@ -1,14 +1,16 @@
 import getArrayFromFile from './helpers/getArrayFromFile.js'
 import printArray from './helpers/printArray.js'
-import removeFromArray from './helpers/removeFromArray.js'
 
+// Выбираем таблицу по значению из коммандной строки
 const table = process.argv[2]
 
 let originalArr = getArrayFromFile(`table${table}.txt`)
-let arr = getArrayFromFile(`table${table}.txt`)
 
-const N = arr.length
+// Количество городов
+const N = originalArr.length
+// Цена всех переходов
 let Q = 0
+// Переходы
 const S = []
 
 console.log('Начальная таблица:')
@@ -17,48 +19,38 @@ printArray(originalArr)
 let i = 1
 console.log(`\nШаг номер ${i}`)
 
-const firstCityIndex = Math.ceil(Math.random() * N) - 1
-let currentCityIndex = firstCityIndex
-console.log(`Начальный выбранный x = ${currentCityIndex + 1}`)
+// Случайно выбираем первый город
+let currentCity = Math.floor(Math.random() * N) + 1
+console.log(`Начальный выбранный x = ${currentCity}`)
 
-S.push(currentCityIndex + 1)
+S.push(currentCity)
 console.log(`S изменился на [${S}]`)
-
-// Сохраняем удаляемую строку, чтобы выполнять по ней поиск минимального значения
-let prevCity = arr[currentCityIndex]
-
-console.log(`Исключаем ${currentCityIndex + 1} строку и столбец`, prevCity)
-removeFromArray(arr, currentCityIndex)
-
-console.log(`Матрица имеет вид:`)
-printArray(arr)
 
 while (i !== N) {
   console.log(`\nШаг номер ${(i += 1)}`)
-  console.log(`Ищем ближайший к предыдущему город в следующей строке:`)
-  console.log(prevCity)
+  console.log(`Ищем ближайший к ${currentCity} город (не включая обойдённые)`)
 
-  const prevCityWithoutNulls = prevCity.filter((item) => item !== 0)
-  const currentCityValue = Math.min(...prevCityWithoutNulls)
+  let routes = originalArr[currentCity - 1]
+  // Исключаем обойдённые города
+  routes = routes.filter((item, index) => !S.includes(index + 1))
+  // Исключаем переходы в себя
+  routes = routes.filter((item) => item !== 0)
 
-  currentCityIndex = prevCity.indexOf(currentCityValue)
-  console.log(`Минимальное значение: ${currentCityValue} для города ${currentCityIndex + 1}`)
-  Q += currentCityValue
+  let closestCity = originalArr[currentCity - 1].indexOf(Math.min(...routes)) + 1
+  let distance = originalArr[currentCity - 1][closestCity - 1]
+
+  console.log(`${currentCity} -> ${closestCity} : ${distance}`)
+
+  Q += distance
   console.log('Q изменилась на ', Q)
 
-  const currentCity = arr[currentCityIndex]
-  console.log(`Исключаем ${currentCityIndex + 1} строку и столбец: `, currentCity)
-
-  prevCity = arr[currentCityIndex]
-  removeFromArray(arr, currentCityIndex)
-  console.log(`Матрица имеет вид:`)
-  printArray(arr)
-
-  S.push(currentCityIndex + 1)
+  currentCity = closestCity
+  S.push(currentCity)
   console.log(`S изменился на `, S)
 }
 
-Q += originalArr[currentCityIndex][firstCityIndex]
+// Расстояние перехода из последнего города в первый
+Q += originalArr[S[0] - 1][S[S.length - 1] - 1]
 console.log('\nРешение:')
 console.log(`S: `, S)
-console.log(`Q: `, Q)
+console.log(`Q: `, Q.toFixed(2))
