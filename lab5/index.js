@@ -2,8 +2,10 @@ import getArrayFromFile from './helpers/getArrayFromFile.js'
 import printArray from './helpers/printArray.js'
 import removeFromArray from './helpers/removeFromArray.js'
 
-let originalArr = getArrayFromFile('table5.txt')
-let arr = getArrayFromFile('table5.txt')
+const table = process.argv[2]
+
+let originalArr = getArrayFromFile(`table${table}.txt`)
+let arr = getArrayFromFile(`table${table}.txt`)
 
 const N = arr.length
 let Q = 0
@@ -28,7 +30,7 @@ let prevCity = arr[currentCityIndex]
 console.log(`Исключаем ${currentCityIndex + 1} строку и столбец`, prevCity)
 removeFromArray(arr, currentCityIndex)
 
-console.log(`Матрица изменилась:`)
+console.log(`Матрица имеет вид:`)
 printArray(arr)
 
 while (i !== N) {
@@ -49,7 +51,7 @@ while (i !== N) {
 
   prevCity = arr[currentCityIndex]
   removeFromArray(arr, currentCityIndex)
-  console.log(`Матрица изменилась:`)
+  console.log(`Матрица имеет вид:`)
   printArray(arr)
 
   S.push(currentCityIndex + 1)
