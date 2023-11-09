@@ -20,7 +20,7 @@ let i = 1
 console.log(`\nШаг номер ${i}`)
 
 // Случайно выбираем первый город
-let currentCityIndex = Math.ceil(Math.random() * N) - 1
+let currentCityIndex = Math.floor(Math.random() * N)
 console.log(`Начальный выбранный x = ${currentCityIndex + 1}`)
 
 S.push(currentCityIndex + 1)
@@ -33,7 +33,7 @@ while (i !== N) {
   console.log(`(не включая уже пройденные города)`)
 
   let minCity = S[0]
-  let minTarget = null
+  let minClosest = null
   let minDistance = Infinity
   S.forEach((city) => {
     // Функция возвращает массив из самого города, ближайшего к нему и расстояния между ними
@@ -42,18 +42,18 @@ while (i !== N) {
     if (distance < minDistance) {
       minCity = city
       minDistance = distance
-      minTarget = closest
+      minClosest = closest
     }
   })
 
   console.log(`Кратчайший переход: `)
-  console.log(`${minCity} -> ${minTarget}: ${minDistance}`)
+  console.log(`${minCity} -> ${minClosest}: ${minDistance}`)
 
-  console.log(`Вставляем ${minTarget} в решение после ${minCity}`)
+  console.log(`Вставляем ${minClosest} в решение после ${minCity}`)
   let indexOfMinCity = S.indexOf(minCity)
   const leftSide = S.slice(0, indexOfMinCity + 1)
   const rightSide = S.slice(indexOfMinCity + 1)
-  S = leftSide.concat(minTarget).concat(rightSide)
+  S = leftSide.concat(minClosest).concat(rightSide)
 
   console.log(`Решение: `, S)
 }
