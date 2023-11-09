@@ -55,17 +55,18 @@ while (i !== N) {
   const rightSide = S.slice(indexOfMinCity + 1)
   S = leftSide.concat(minTarget).concat(rightSide)
 
-  Q += minDistance
   console.log(`Решение: `, S)
-  console.log(`Q = ${Q}`)
 }
 
-// Добавляем цену перехода из первого города в последний
+// Считаем стоимость всех переходов
+for (let i = 0; i < S.length - 1; i++) {
+  Q += originalArr[S[i] - 1][S[i + 1] - 1]
+}
 Q += originalArr[S[0] - 1][S[S.length - 1] - 1]
 
 console.log(`\nФинальное решение:`)
 console.log(`S: `, S)
-console.log(`Q: `, Q)
+console.log(`Q: `, Q.toFixed(2))
 
 function getTransitionData(city) {
   let possibleRoutes = originalArr[city - 1]
