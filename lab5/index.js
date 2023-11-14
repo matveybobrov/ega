@@ -42,7 +42,7 @@ while (i !== N) {
   console.log(`${currentCity} -> ${closestCity} : ${distance}`)
 
   Q += distance
-  console.log('Q изменилась на ', Q)
+  console.log('Q изменилось на ', Q.toFixed(2))
 
   currentCity = closestCity
   S.push(currentCity)
