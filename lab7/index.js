@@ -16,7 +16,7 @@ for (let i = 0; i < items.length; i++) {
 
   console.log(`Ищем предмет с максимальной ценностью из оставшихся...`)
   let bestItem = getMostValuableItem(items)
-  if (bestItem === null) {
+  if (bestItem.value === null) {
     console.log(`Не осталось предметов, которые бы влезли в рюкзак`)
     break
   }
@@ -36,28 +36,22 @@ console.log(`\nРешение: `, result)
 console.log(`Итоговый вес ранца: ${totalWeight}/${maxWeight}`)
 console.log(`Итоговая ценность ранца: ${totalValue}`)
 
-// Рекурсивная функция
 function getMostValuableItem(items) {
-  // Исключаем уже взятые предметы
   items = items.filter((item) => result[item.id] !== 1)
 
-  let noMoreItems = items.length === 0
-  if (noMoreItems) {
-    return null
+  let max = {
+    value: null,
+    weight: null,
   }
 
-  let values = items.map((item) => item.value)
-  let mostValuableItemValue = Math.max(...values)
-  let indexOfMostValuableItem = values.indexOf(mostValuableItemValue)
+  for (let i = 0; i < items.length; i++) {
+    let current = items[i]
 
-  let mostValuableItem = items[indexOfMostValuableItem]
-
-  let itemDoesntFit = mostValuableItem.weight > maxWeight - totalWeight
-  if (itemDoesntFit) {
-    let itemsWithoutCurrent = items.filter((item) => item.id !== mostValuableItem.id)
-    return getMostValuableItem(itemsWithoutCurrent)
+    let isBetter = current.value > max.value
+    let doesFit = current.weight <= maxWeight - totalWeight
+    if (isBetter && doesFit) {
+      max = current
+    }
   }
-
-  let foundItem = items[indexOfMostValuableItem]
-  return foundItem
+  return max
 }

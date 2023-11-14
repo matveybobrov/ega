@@ -16,14 +16,14 @@ for (let i = 0; i < items.length; i++) {
 
   console.log(`Ищем предмет с максимальной удельной ценностью из оставшихся...`)
   let bestItem = getMostValuableItem(items)
-  if (bestItem === null) {
+  if (bestItem.value === null) {
     console.log(`Не осталось предметов, которые бы влезли в рюкзак`)
     break
   }
 
   console.log(`Лучший предмет ${bestItem.id + 1}`)
   console.log(`Стоимость: ${bestItem.value}; Вес: ${bestItem.weight}`)
-  console.log(`Удельная ценность: ${(bestItem.value / bestItem.weight).toFixed(3)}`)
+  console.log(`Удельная ценность: ${bestItem.unitValue.toFixed(3)}`)
 
   result[bestItem.id] = 1
   totalWeight += bestItem.weight
@@ -38,30 +38,25 @@ printArray(items.filter((item) => result[item.id] === 1))
 console.log(`Итоговый вес ранца: ${totalWeight}/${maxWeight}`)
 console.log(`Итоговая ценность ранца: ${totalValue}`)
 
-// Рекурсивная функция
 function getMostValuableItem(items) {
-  // Исключаем уже взятые предметы
   items = items.filter((item) => result[item.id] !== 1)
 
-  let noMoreItems = items.length === 0
-  if (noMoreItems) {
-    return null
+  let max = {
+    value: null,
+    unitValue: null,
+    weight: null,
   }
 
-  let unitValues = items.map((item) => {
-    return Number((item.value / item.weight).toFixed(3))
-  })
-  let mostValuableItemValue = Math.max(...unitValues)
-  let indexOfMostValuableItem = unitValues.indexOf(mostValuableItemValue)
+  for (let i = 0; i < items.length; i++) {
+    let currentItem = items[i]
+    currentItem.unitValue = currentItem.value / currentItem.weight
 
-  let mostValuableItem = items[indexOfMostValuableItem]
+    let isBetter = currentItem.unitValue > max.unitValue
+    let doesFit = currentItem.weight <= maxWeight - totalWeight
 
-  let itemDoesntFit = mostValuableItem.weight > maxWeight - totalWeight
-  if (itemDoesntFit) {
-    let itemsWithoutCurrent = items.filter((item) => item.id !== mostValuableItem.id)
-    return getMostValuableItem(itemsWithoutCurrent)
+    if (isBetter && doesFit) {
+      max = currentItem
+    }
   }
-
-  let foundItem = items[indexOfMostValuableItem]
-  return foundItem
+  return max
 }
