@@ -2,7 +2,7 @@ import printArray from './helpers/printArray.js'
 import getArrayFromFile from './helpers/getArrayFromFile.js'
 
 const items = getArrayFromFile(`table5.txt`)
-const maxWeight = 35
+const maxWeight = 60
 
 printArray(items)
 console.log(`Вместимость: ${maxWeight}`)
@@ -33,6 +33,7 @@ for (let i = 0; i < items.length; i++) {
 }
 
 console.log(`\nРешение: `, result)
+printArray(items.filter((item) => result[item.id] === 1))
 console.log(`Итоговый вес ранца: ${totalWeight}/${maxWeight}`)
 console.log(`Итоговая ценность ранца: ${totalValue}`)
 

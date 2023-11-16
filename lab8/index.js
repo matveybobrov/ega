@@ -2,7 +2,7 @@ import printArray from './helpers/printArray.js'
 import getArrayFromFile from './helpers/getArrayFromFile.js'
 
 const items = getArrayFromFile(`table5.txt`)
-const maxWeight = 35
+const maxWeight = 60
 
 printArray(items)
 console.log(`Вместимость: ${maxWeight}`)
