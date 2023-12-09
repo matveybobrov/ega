@@ -6,6 +6,7 @@ import { crossover } from './modules/crossover.js'
 import { mutate } from './modules/mutate.js'
 import { selection } from './modules/selection.js'
 import getAdaptation from './helpers/getAdaptation.js'
+import findBestEntity from './helpers/findBestEntity.js'
 
 const DATA = getArrayFromFile('assets/table5.txt')
 const MAX_WEIGHT = 75
@@ -21,15 +22,18 @@ do {
   console.log('Номер поколения: ', 1 + NEW_POPULATIONS_COUNT)
   console.log('Текущая популяция:')
   console.log(CURRENT_POPULATION)
+  console.log('Лучшая особь:')
+  const bestEntity = findBestEntity(CURRENT_POPULATION)
+  console.log(bestEntity)
   // Этап 2 - формирование детей
   // сейчас дети могут повторяться и быть пустыми
   let CHILDREN = []
   for (let i = 0; i < CURRENT_POPULATION.length / 2; i++) {
     const parents = getRandomParents(CURRENT_POPULATION)
     let children = crossover(parents)
-    children = getAdaptation(children, DATA)
     CHILDREN = [...CHILDREN, ...children]
   }
+  CHILDREN = getAdaptation(CHILDREN, DATA)
   console.log('Все дети:')
   console.log(CHILDREN)
 
