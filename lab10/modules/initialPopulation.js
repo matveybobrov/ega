@@ -1,4 +1,4 @@
-import isSolution from './isSolution.js'
+import isSolution from '../helpers/isSolution.js'
 
 function generateEntity(size) {
   const arrayOfNulls = Array(size).fill(0)
