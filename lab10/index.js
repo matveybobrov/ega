@@ -1,12 +1,12 @@
 import { getArrayFromFile, printData } from './helpers/handleData.js'
-
-import { generateControlledRandomPopulation } from './modules/initialPopulation.js'
-import { getRandomParents } from './modules/parents.js'
-import { crossover } from './modules/crossover.js'
-import { mutate } from './modules/mutate.js'
-import { selection } from './modules/selection.js'
 import getAdaptation from './helpers/getAdaptation.js'
 import findBestEntity from './helpers/findBestEntity.js'
+
+import { generateControlledRandomPopulation } from './modules/initialPopulation.js'
+import Parents from './modules/parents.js'
+import { crossover } from './modules/crossover.js'
+import { mutate } from './modules/mutate.js'
+import { evaluate } from './modules/evaluation.js'
 
 const DATA = getArrayFromFile('assets/table5.txt')
 const MAX_WEIGHT = 75
@@ -22,14 +22,16 @@ do {
   console.log('Номер поколения: ', 1 + NEW_POPULATIONS_COUNT)
   console.log('Текущая популяция:')
   console.log(CURRENT_POPULATION)
+
   console.log('Лучшая особь:')
   const bestEntity = findBestEntity(CURRENT_POPULATION)
   console.log(bestEntity)
+
   // Этап 2 - формирование детей
   // сейчас дети могут повторяться и быть пустыми
   let CHILDREN = []
   for (let i = 0; i < CURRENT_POPULATION.length / 2; i++) {
-    const parents = getRandomParents(CURRENT_POPULATION)
+    const parents = Parents.getRandomParents(CURRENT_POPULATION)
     let children = crossover(parents)
     CHILDREN = [...CHILDREN, ...children]
   }
@@ -45,19 +47,18 @@ do {
 
   // Этап 4 - оценивание
   console.log('Отобранные кандидаты')
-  const SELECTED = selection(MUTANTS, DATA, MAX_WEIGHT)
-  console.log(SELECTED)
+  const EVALUATED = evaluate(MUTANTS, DATA, MAX_WEIGHT)
+  console.log(EVALUATED)
 
   // Этап 5 - фомирование нового поколения
   console.log('Новое поколение')
-  const NEW_POPULATION = SELECTED
+  const NEW_POPULATION = EVALUATED
   console.log(NEW_POPULATION)
-  // Условие остановки - суммарная приспособленность не увеличивается 5 поколений подряд
 
   CURRENT_POPULATION = NEW_POPULATION
   NEW_POPULATIONS_COUNT++
   console.log('\n')
-} while (NEW_POPULATIONS_COUNT < 5)
+} while (NEW_POPULATIONS_COUNT < 1)
 
 console.log('Финальное решение')
 console.log(CURRENT_POPULATION)
