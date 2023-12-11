@@ -1,6 +1,6 @@
 import { roulette } from '../helpers/roulette.js'
 
-// Панмиксия
+// Панмиксия (случайные родители)
 function getRandomParents(population) {
   const parents = []
   while (parents.length < 2) {
@@ -13,7 +13,7 @@ function getRandomParents(population) {
   return parents
 }
 
-// Положительное ассоциативное скрещивание
+// Положительное ассоциативное скрещивание (рулетка)
 function getParentsByAdaptation(population) {
   const parents = []
   const values = population.map((item) => item.adaptation)

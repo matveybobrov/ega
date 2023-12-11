@@ -4,8 +4,8 @@ import findBestEntity from './helpers/findBestEntity.js'
 
 import { generateControlledRandomPopulation } from './modules/initialPopulation.js'
 import Parents from './modules/parents.js'
-import { crossover } from './modules/crossover.js'
-import { mutate } from './modules/mutate.js'
+import Crossover from './modules/crossover.js'
+import Mutate from './modules/mutate.js'
 import { evaluate } from './modules/evaluation.js'
 
 const DATA = getArrayFromFile('assets/table5.txt')
@@ -32,7 +32,7 @@ do {
   let CHILDREN = []
   for (let i = 0; i < CURRENT_POPULATION.length / 2; i++) {
     const parents = Parents.getRandomParents(CURRENT_POPULATION)
-    let children = crossover(parents)
+    let children = Crossover.oneBreakpoint(parents)
     CHILDREN = [...CHILDREN, ...children]
   }
   CHILDREN = getAdaptation(CHILDREN, DATA)
@@ -41,7 +41,7 @@ do {
 
   // Этап 3 - мутация детей
   console.log('Мутанты')
-  let MUTANTS = mutate(CHILDREN)
+  let MUTANTS = Mutate.addition(CHILDREN)
   MUTANTS = getAdaptation(MUTANTS, DATA)
   console.log(MUTANTS)
 
