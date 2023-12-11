@@ -1,4 +1,5 @@
 import isSolution from '../helpers/isSolution.js'
+import { roulette } from '../helpers/roulette.js'
 
 function generateEntity(size) {
   const arrayOfNulls = Array(size).fill(0)
@@ -40,3 +41,5 @@ export function generateControlledRandomPopulation(data, maxWeight) {
   }
   return population
 }
+
+function generatePopulationByRoulette(data) {}
