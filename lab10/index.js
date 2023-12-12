@@ -54,7 +54,7 @@ do {
 
   // Этап 5 - селекция
   console.log('Отобранные кандидаты')
-  const SELECTED = Selection.tournament(EVALUATED)
+  const SELECTED = Selection.proportion(EVALUATED)
   console.log(SELECTED)
 
   // Этап 6 - формирование нового поколения
@@ -69,3 +69,8 @@ do {
 
 console.log('Финальное решение')
 console.log(CURRENT_POPULATION)
+
+// Осталось сделать:
+// - условие остановки
+// - замену родителей детьми в новом поколении
+// - жадный алгоритм для генерации начальной популяции

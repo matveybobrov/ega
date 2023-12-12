@@ -5,11 +5,9 @@ function proportion(entities) {
   const count = entities.length
   const selectedEntities = []
   const adaptations = entities.map((e) => e.adaptation)
-  console.log(adaptations)
 
   while (selectedEntities.length < count) {
     const [id] = roulette(adaptations, 1)
-    console.log(id)
     selectedEntities.push(entities[id])
   }
 
