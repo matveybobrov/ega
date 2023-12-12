@@ -8,6 +8,7 @@ import Crossover from './modules/crossover.js'
 import Mutate from './modules/mutate.js'
 import Evaluate from './modules/evaluation.js'
 import Selection from './modules/selection.js'
+import { newPopulation } from './modules/newPopulation.js'
 
 const DATA = getArrayFromFile('assets/table5.txt')
 const MAX_WEIGHT = 75
@@ -31,7 +32,7 @@ do {
   // Этап 2 - формирование детей
   // сейчас дети могут повторяться и быть пустыми
   let CHILDREN = []
-  for (let i = 0; i < CURRENT_POPULATION.length / 2; i++) {
+  for (let i = 0; i < CURRENT_POPULATION.length / 2 - 1; i++) {
     const parents = Parents.getRandomParents(CURRENT_POPULATION)
     let children = Crossover.oneBreakpoint(parents)
     CHILDREN = [...CHILDREN, ...children]
@@ -59,7 +60,7 @@ do {
 
   // Этап 6 - формирование нового поколения
   console.log('Новая популяция')
-  const NEW_POPULATION = SELECTED
+  const NEW_POPULATION = newPopulation(CURRENT_POPULATION, SELECTED)
   console.log(NEW_POPULATION)
 
   CURRENT_POPULATION = NEW_POPULATION
@@ -72,5 +73,4 @@ console.log(CURRENT_POPULATION)
 
 // Осталось сделать:
 // - условие остановки
-// - замену родителей детьми в новом поколении
 // - жадный алгоритм для генерации начальной популяции
