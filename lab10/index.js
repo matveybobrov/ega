@@ -7,6 +7,7 @@ import Parents from './modules/parents.js'
 import Crossover from './modules/crossover.js'
 import Mutate from './modules/mutate.js'
 import Evaluate from './modules/evaluation.js'
+import Selection from './modules/selection.js'
 
 const DATA = getArrayFromFile('assets/table5.txt')
 const MAX_WEIGHT = 75
@@ -46,14 +47,19 @@ do {
   console.log(MUTANTS)
 
   // Этап 4 - оценивание
-  console.log('Отобранные кандидаты')
-  let EVALUATED = Evaluate.elimination(MUTANTS, DATA, MAX_WEIGHT)
+  console.log('Оцененные кандидаты')
+  let EVALUATED = Evaluate.modify(MUTANTS, DATA, MAX_WEIGHT)
   EVALUATED = getAdaptation(EVALUATED, DATA)
   console.log(EVALUATED)
 
-  // Этап 5 - фомирование нового поколения
-  console.log('Новое поколение')
-  const NEW_POPULATION = EVALUATED
+  // Этап 5 - селекция
+  console.log('Отобранные кандидаты')
+  const SELECTED = Selection.tournament(EVALUATED)
+  console.log(SELECTED)
+
+  // Этап 6 - формирование нового поколения
+  console.log('Новая популяция')
+  const NEW_POPULATION = SELECTED
   console.log(NEW_POPULATION)
 
   CURRENT_POPULATION = NEW_POPULATION

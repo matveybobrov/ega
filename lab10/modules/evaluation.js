@@ -7,7 +7,7 @@ function elimination(entities, data, maxWeight) {
   return selectedEntities
 }
 
-// Модификация генотипа (доделать)
+// Модификация генотипа
 function modify(entities, data, maxWeight) {
   const selectedEntities = []
   const values = data.map((item) => item.value)
