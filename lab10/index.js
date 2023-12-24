@@ -1,5 +1,5 @@
 import { getArrayFromFile, printData } from './helpers/handleData.js'
-import getAdaptation from './helpers/getAdaptation.js'
+import getAdaptationAndWeight from './helpers/getAdaptation.js'
 import findBestEntity from './helpers/findBestEntity.js'
 
 import { generateControlledRandomPopulation } from './modules/initialPopulation.js'
@@ -10,13 +10,13 @@ import Evaluate from './modules/evaluation.js'
 import Selection from './modules/selection.js'
 import { newPopulation } from './modules/newPopulation.js'
 
-const DATA = getArrayFromFile('assets/table5.txt')
-const MAX_WEIGHT = 75
+const DATA = getArrayFromFile('assets/table15.txt')
+const MAX_WEIGHT = 106
 printData(DATA)
 
 // Этап 1 - создание популяции
 let INITIAL_POPULATION = generateControlledRandomPopulation(DATA, MAX_WEIGHT)
-INITIAL_POPULATION = getAdaptation(INITIAL_POPULATION, DATA)
+INITIAL_POPULATION = getAdaptationAndWeight(INITIAL_POPULATION, DATA)
 let CURRENT_POPULATION = INITIAL_POPULATION
 
 let NEW_POPULATIONS_COUNT = 0
@@ -30,27 +30,26 @@ do {
   console.log(bestEntity)
 
   // Этап 2 - формирование детей
-  // сейчас дети могут повторяться и быть пустыми
   let CHILDREN = []
   for (let i = 0; i < CURRENT_POPULATION.length / 2 - 1; i++) {
     const parents = Parents.getRandomParents(CURRENT_POPULATION)
     let children = Crossover.oneBreakpoint(parents)
     CHILDREN = [...CHILDREN, ...children]
   }
-  CHILDREN = getAdaptation(CHILDREN, DATA)
+  CHILDREN = getAdaptationAndWeight(CHILDREN, DATA)
   console.log('Все дети:')
   console.log(CHILDREN)
 
   // Этап 3 - мутация детей
   console.log('Мутанты')
   let MUTANTS = Mutate.addition(CHILDREN)
-  MUTANTS = getAdaptation(MUTANTS, DATA)
+  MUTANTS = getAdaptationAndWeight(MUTANTS, DATA)
   console.log(MUTANTS)
 
   // Этап 4 - оценивание
   console.log('Оцененные кандидаты')
   let EVALUATED = Evaluate.modify(MUTANTS, DATA, MAX_WEIGHT)
-  EVALUATED = getAdaptation(EVALUATED, DATA)
+  EVALUATED = getAdaptationAndWeight(EVALUATED, DATA)
   console.log(EVALUATED)
 
   // Этап 5 - селекция
@@ -66,11 +65,14 @@ do {
   CURRENT_POPULATION = NEW_POPULATION
   NEW_POPULATIONS_COUNT++
   console.log('\n')
-} while (NEW_POPULATIONS_COUNT < 1)
+} while (NEW_POPULATIONS_COUNT < 3)
 
 console.log('Финальное решение')
 console.log(CURRENT_POPULATION)
+console.log('Лучшее решение')
+console.log(findBestEntity(CURRENT_POPULATION))
 
 // Осталось сделать:
+// - выбор стратегии формирования следующего поколения (заменять ли всех особей)
 // - условие остановки
 // - жадный алгоритм для генерации начальной популяции

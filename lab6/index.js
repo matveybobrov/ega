@@ -69,13 +69,20 @@ console.log(`S: `, S)
 console.log(`Q: `, Q.toFixed(2))
 
 function getTransitionData(city) {
-  let possibleRoutes = originalArr[city - 1]
-  // Исключаем из обхода уже пройденные города
-  possibleRoutes = possibleRoutes.filter((item, index) => !S.includes(index + 1))
-  // Исключаем из обхода нули
-  possibleRoutes = possibleRoutes.filter((item) => item !== 0)
-  let closestCity = originalArr[city - 1].indexOf(Math.min(...possibleRoutes)) + 1
-  let distance = originalArr[city - 1][closestCity - 1]
+  let routes = originalArr[city - 1]
+  /// Исключаем обойдённые города и переходы в себя
+  routes = routes.map((item, index) => {
+    const isVisited = S.includes(index + 1)
+    if (isVisited) {
+      return Infinity
+    }
+    if (item === 0) {
+      return Infinity
+    }
+    return item
+  })
+  let distance = Math.min(...routes)
+  let closestCity = routes.indexOf(distance) + 1
   return [city, closestCity, distance]
 }
 

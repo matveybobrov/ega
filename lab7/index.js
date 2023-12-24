@@ -1,8 +1,11 @@
 import printArray from './helpers/printArray.js'
 import getArrayFromFile from './helpers/getArrayFromFile.js'
 
-const items = getArrayFromFile(`table5.txt`)
-const maxWeight = 60
+// Выбираем таблицу по значению из коммандной строки
+const table = process.argv[2]
+
+const items = getArrayFromFile(`table${table}.txt`)
+const maxWeight = table == 5 ? 60 : 106
 
 printArray(items)
 console.log(`Вместимость: ${maxWeight}`)

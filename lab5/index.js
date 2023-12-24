@@ -20,7 +20,7 @@ let i = 1
 console.log(`\nШаг номер ${i}`)
 
 // Случайно выбираем первый город
-let currentCity = Math.floor(Math.random() * N) + 1
+let currentCity = Math.ceil(Math.random() * N)
 console.log(`Начальный выбранный x = ${currentCity}`)
 
 S.push(currentCity)
@@ -31,13 +31,19 @@ while (i !== N) {
   console.log(`Ищем ближайший к ${currentCity} город (не включая обойдённые)`)
 
   let routes = originalArr[currentCity - 1]
-  // Исключаем обойдённые города
-  routes = routes.filter((item, index) => !S.includes(index + 1))
-  // Исключаем переходы в себя
-  routes = routes.filter((item) => item !== 0)
-
-  let closestCity = originalArr[currentCity - 1].indexOf(Math.min(...routes)) + 1
-  let distance = originalArr[currentCity - 1][closestCity - 1]
+  // Исключаем обойдённые города и переходы в себя
+  routes = routes.map((item, index) => {
+    const isVisited = S.includes(index + 1)
+    if (isVisited) {
+      return Infinity
+    }
+    if (item === 0) {
+      return Infinity
+    }
+    return item
+  })
+  let distance = Math.min(...routes)
+  let closestCity = routes.indexOf(distance) + 1
 
   console.log(`${currentCity} -> ${closestCity} : ${distance}`)
 

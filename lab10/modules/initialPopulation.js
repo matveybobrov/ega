@@ -41,5 +41,3 @@ export function generateControlledRandomPopulation(data, maxWeight) {
   }
   return population
 }
-
-function generatePopulationByRoulette(data) {}

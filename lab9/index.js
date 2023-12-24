@@ -1,13 +1,16 @@
 import printArray from './helpers/printArray.js'
 import getArrayFromFile from './helpers/getArrayFromFile.js'
 
-const items = getArrayFromFile(`table5.txt`)
+// Выбираем таблицу по значению из коммандной строки
+const table = process.argv[2]
+
+const items = getArrayFromFile(`table${table}.txt`)
+const maxWeight = table == 5 ? 60 : 106
 items.forEach((item) => {
   item.unitValue = item.value / item.weight
 })
-const maxWeight = 60
 
-const chosenAlgorithm = Number(process.argv[2])
+const chosenAlgorithm = Number(process.argv[3])
 // 1 - по ценности
 // 2 - по удельной ценности
 
@@ -48,8 +51,6 @@ printArray(items.filter((item) => result[item.id] === 1))
 console.log(`Итоговый вес ранца: ${totalWeight}/${maxWeight}`)
 console.log(`Итоговая ценность ранца: ${totalValue}`)
 
-// На шкале длиной, равной сумме ценностей всех предметов
-// выбираем случайную точку и на её основе выбираем предмет
 function generateRandom(items) {
   items = items.filter((item) => result[item.id] !== 1)
   if (items.length === 0) return null
@@ -78,10 +79,12 @@ function generateRandom(items) {
       break
     }
   }
+
   let doesFit = chosen.weight <= maxWeight - totalWeight
   if (!doesFit) {
     let itemsWithoutCurrent = items.filter((item) => item.id !== chosen.id)
     return generateRandom(itemsWithoutCurrent)
   }
+
   return chosen
 }
